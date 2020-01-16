@@ -54,13 +54,13 @@ class App extends Component {
     );
 
     return (
-      <div class="card" style={{width: 35 + 'em'}}>
-      <div class="card-body"> 
-          <h1 class="card-title">Bag's Food</h1>
+      <div className="card" style={{width: 35 + 'em'}}>
+      <div className="card-body"> 
+          <h1 className="card-title">Bag's Food</h1>
           <ul className="items">
             {listItems}
           </ul>
-          <h1 class="card-title">Animals to eat</h1>
+          <h1 className="card-title">Animals to eat</h1>
            <ul className="items">
             {listAnimals}
           </ul>
@@ -89,7 +89,6 @@ class App extends Component {
   onSelect(itemLink) {
     this.clearState();
     this.itemService.getItem(itemLink).then(item => {
-      console.log("selected Item -->", item);
       this.setState({
           showDetails: true,
           selectedItem: item

@@ -13,7 +13,7 @@ class ProcessorResult extends Component {
 
   render() {
     return (
-      <div class="card text-white bg-dark mb-3" style={{width: 26 + 'em'}}> 
+      <div className="card text-white bg-dark mb-3" style={{width: 26 + 'em'}}> 
             {this.state.result} 
           </div>
     );

@@ -16,7 +16,6 @@ class ItemDetails extends Component {
       <div className="input-panel">
       <h1>Editanto</h1>
       <span className="form-caption">Estas editando a <b>{item.food}</b></span>
-      <div><span className="field-name">Animal:</span><br/> {item.specie}</div>
       <div><span className="field-name">Food:</span><br/> {item.food}</div>
       <br/>
       <button onClick={() => this.onDelete()}>Delete</button>&nbsp;

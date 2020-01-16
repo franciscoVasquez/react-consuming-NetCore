@@ -14,15 +14,16 @@ class EditItem extends Component {
     this.state = {
       id: itemToEdit.animalId,
       food: itemToEdit.food,
-      specie: itemToEdit.specie
+      specie: itemToEdit.specie,
+      link: itemToEdit.link
     };
   }
 
   handleInputChange(event) {
+    event.persist();
     const target = event.target;
     const value = target.value;
-    const name = target.name;
-
+    const name = target.name; 
     this.setState({
       [name]: value
     });
@@ -41,15 +42,10 @@ class EditItem extends Component {
   render() {
     return (
       <div className="input-panel">
-      <span className="form-caption">Edit item:</span>&nbsp;<span>{this.state.specie}</span>
-      <div>
-        <label className="field-name">Animal:<br/>
-          <input value={this.state.specie} name="name" maxLength="40" required onChange={this.handleInputChange} placeholder="Animal" />
-        </label>
-      </div>
+      <span className="form-caption">Edit item:</span>&nbsp;<span>{this.state.food}</span>
       <div>
         <label className="field-name">Food:<br/>
-          <input value={this.state.food} name="summary" maxLength="40" required onChange={this.handleInputChange} placeholder="food" />
+          <input value={this.state.food} name="food" maxLength="40" required onChange={this.handleInputChange} placeholder="food" />
         </label>
       </div>
       <br/>

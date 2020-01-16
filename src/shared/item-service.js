@@ -20,13 +20,13 @@ class ItemService {
       })
       .then(json => {
         console.log("Retrieved items:");
-        console.log(json);
         const items = [];
         const itemArray = json; //json._embedded.animal;
         for(var i = 0; i < itemArray.length; i++) {
           itemArray[i]["link"] =  this.config.ITEM_COLLECTION_URL+this.state.apiAction+'/'+itemArray[i]["animalId"];
           items.push(itemArray[i]);
         }
+        console.log(items);
         return json;
       })
       .catch(error => {
@@ -45,7 +45,8 @@ class ItemService {
         return response.json();
       })
       .then(item => {
-          item["link"] = this.config.ITEM_COLLECTION_URL+'/'+item.animalId;
+          console.log(item);
+          item["link"] = itemLink;
           return item;
         }
       )
