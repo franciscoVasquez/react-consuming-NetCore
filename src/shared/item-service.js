@@ -3,16 +3,19 @@ import Configuration from './configuration';
 class ItemService {
   constructor() {
     this.config = new Configuration();
+
+     this.state = {
+      apiAction: 'animal'
+    };
   }
 
 
   async retrieveItems() {
-    return fetch(this.config.ITEM_COLLECTION_URL)
+    return fetch(this.config.ITEM_COLLECTION_URL+this.state.apiAction)
       .then(response => {
         if (!response.ok) {
           this.handleResponseError(response);
         }
-        console.log("passing here -->", response);
         return response.json();
       })
       .then(json => {
@@ -21,7 +24,7 @@ class ItemService {
         const items = [];
         const itemArray = json; //json._embedded.animal;
         for(var i = 0; i < itemArray.length; i++) {
-          //itemArray[i]["animalId"] =  itemArray[i]._links.self.href;
+          itemArray[i]["link"] =  this.config.ITEM_COLLECTION_URL+this.state.apiAction+'/'+itemArray[i]["animalId"];
           items.push(itemArray[i]);
         }
         return json;
@@ -42,7 +45,7 @@ class ItemService {
         return response.json();
       })
       .then(item => {
-          item["link"] = item._links.self.href;
+          item["link"] = this.config.ITEM_COLLECTION_URL+'/'+item.animalId;
           return item;
         }
       )
@@ -103,6 +106,29 @@ async createItem(newitem) {
           this.handleResponseError(response);
         }
         return response.json();
+      })
+      .catch(error => {
+        this.handleError(error);
+      });
+  }
+
+  async processList(itemList, processAction) {
+    console.log(this.config.ITEM_COLLECTION_URL+processAction);
+    console.log("item List --->", JSON.stringify(itemList));
+    return fetch(this.config.ITEM_COLLECTION_URL+processAction, {
+      method: "POST",
+      headers: {
+            'Accept' : 'application/json, text/plain, */*',
+            'Content-Type': "application/json"
+        },
+      body: JSON.stringify(itemList)
+      
+    })
+      .then(response => {
+       if (!response.ok) {
+            this.handleResponseError(response);
+        }
+        return response.text();
       })
       .catch(error => {
         this.handleError(error);

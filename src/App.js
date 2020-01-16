@@ -4,6 +4,7 @@ import ItemService from './shared/item-service';
 import ItemDetails from './item-details';
 import NewItem from './new-item';
 import EditItem from './edit-item';
+import ProcessorResult from './result';
 
 class App extends Component {
   constructor(props){
@@ -21,7 +22,8 @@ class App extends Component {
       showDetails: false,
       editItem: false,
       selectedItem: null,
-      newItem: null
+      newItem: null,
+      processorResp: null
     }
   }
     //This is the first call of the component
@@ -34,42 +36,60 @@ class App extends Component {
   {
     const items = this.state.items;
     if(!items) return null;
+    const apiAction = "processor";
+    const processorResp = this.state.processorResp;
     const showDetails = this.state.showDetails;
     const selectedItem = this.state.selectedItem;
     const newItem = this.state.newItem;
     const editItem = this.state.editItem;
     const listItems = items.map((item) =>
-      <li key={item.animalId} onClick={() => this.onSelect(item.animalId)}>
-         <span className="item-name">{item.specie}</span>&nbsp;|&nbsp; {item.food}
+      <li key={item.animalId} onClick={() => this.onSelect(item.link)}>
+         <a href="#"><span className="item-name">{item.food}</span></a>
+      </li>
+    );
+    const listAnimals = items.map((item) => 
+      <li key={item.animalId}>
+          <span className="item-name">{item.specie}</span>
       </li>
     );
 
     return (
-      <div className="App">
+      <div class="card" style={{width: 35 + 'em'}}>
+      <div class="card-body"> 
+          <h1 class="card-title">Bag's Food</h1>
           <ul className="items">
             {listItems}
           </ul>
+          <h1 class="card-title">Animals to eat</h1>
+           <ul className="items">
+            {listAnimals}
+          </ul>
           <br/>
-          <button type="button" name="button" onClick={() => this.onNewItem()}>New Item</button>
+          <button type="button" name="button" onClick={() => this.onNewItem()}>Add food to bag</button>
+          &nbsp;&nbsp;
+          <button type="button" name="button" onClick={() => this.onProcess(items, apiAction)}>Let's Eat</button>
           <br/>
             {newItem && <NewItem onSubmit={this.onCreateItem} onCancel={this.onCancel}/>}
-            {showDetails && selectedItem && <ItemDetails item={selectedItem} onEdit={this.onEditItem}  onDelete={this.onDeleteItem} />}
+            {showDetails && selectedItem && <ItemDetails item={selectedItem} onEdit={this.onEditItem}  onDelete={this.onDeleteItem} onCancel={this.onCancel} />}
             {editItem && selectedItem && <EditItem onSubmit={this.onUpdateItem} onCancel={this.onCancelEdit} item={selectedItem} />}
+            <br/>
+            {processorResp && <ProcessorResult result={processorResp} />}
+          
+          
+      </div>
       </div>
     );
   }
-
   getItems() {
     this.itemService.retrieveItems().then(items => {
-      console.log("desde app.js--->",items);
           this.setState({items: items});
         }
     );
   }
-
   onSelect(itemLink) {
     this.clearState();
     this.itemService.getItem(itemLink).then(item => {
+      console.log("selected Item -->", item);
       this.setState({
           showDetails: true,
           selectedItem: item
@@ -87,6 +107,17 @@ class App extends Component {
     this.setState({
       newItem: true
     });
+  }
+
+  onProcess(items, apiAction) {
+    this.clearState();
+    this.itemService.processList(items, apiAction).then(resp => {
+      console.log(resp);
+        this.setState({
+          processorResp: resp
+        });
+      }
+    );
   }
 
   onEditItem() {

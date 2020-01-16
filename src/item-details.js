@@ -7,18 +7,21 @@ class ItemDetails extends Component {
     super(props);
     this.onEdit = this.onEdit.bind(this);
     this.onDelete = this.onDelete.bind(this);
+    this.onCancel = this.onCancel.bind(this);
   }
 
   render() {
     const item = this.props.item;
     return (
       <div className="input-panel">
-      <span className="form-caption">{ item.animal}</span>
-      <div><span className="field-name">Animal:</span><br/> {item.animal}</div>
-      <div><span className="field-name">Food:</span><br/> {item.summary}</div>
+      <h1>Editanto</h1>
+      <span className="form-caption">Estas editando a <b>{item.food}</b></span>
+      <div><span className="field-name">Animal:</span><br/> {item.specie}</div>
+      <div><span className="field-name">Food:</span><br/> {item.food}</div>
       <br/>
       <button onClick={() => this.onDelete()}>Delete</button>&nbsp;
       <button onClick={() => this.onEdit()}>Edit</button>
+      <button onClick={() => this.onCancel()}>Close</button>
       </div>
     );
   }
@@ -32,6 +35,9 @@ class ItemDetails extends Component {
     if(window.confirm("Are you sure to delete item: " + item.animal + " ?")) {
       this.props.onDelete(item.id);
     }
+  }
+  onCancel() {
+    this.props.onCancel();
   }
 
 }

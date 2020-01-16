@@ -14,7 +14,7 @@ class EditItem extends Component {
     this.state = {
       id: itemToEdit.animalId,
       food: itemToEdit.food,
-      animal: itemToEdit.animal
+      specie: itemToEdit.specie
     };
   }
 
@@ -41,10 +41,10 @@ class EditItem extends Component {
   render() {
     return (
       <div className="input-panel">
-      <span className="form-caption">Edit item:</span>&nbsp;<span>{this.state.name}</span>
+      <span className="form-caption">Edit item:</span>&nbsp;<span>{this.state.specie}</span>
       <div>
         <label className="field-name">Animal:<br/>
-          <input value={this.state.animal} name="name" maxLength="40" required onChange={this.handleInputChange} placeholder="Animal" />
+          <input value={this.state.specie} name="name" maxLength="40" required onChange={this.handleInputChange} placeholder="Animal" />
         </label>
       </div>
       <div>
